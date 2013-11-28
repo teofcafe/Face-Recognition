@@ -12,3 +12,5 @@ The LBPH algorithm is chosen in this implementation for best resuls, but you can
 
 Grande Ovelha Seca
 dqwdadSFGYUBRTV4GBERSFUGO9HLGIJTRE4NY6M7JUTFGHsaDAFDSV
+Miau miau
+
