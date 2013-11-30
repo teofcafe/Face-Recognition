@@ -14,8 +14,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
-import android.os.Environment;
-//import android.provider.MediaStore.Files;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,7 +32,6 @@ import android.widget.ViewSwitcher;
  
 public class ImageGallery extends Activity implements
         AdapterView.OnItemSelectedListener, ViewSwitcher.ViewFactory {
- 
 	
 	labels thelabels;
 	int count=0;
@@ -55,7 +52,6 @@ public class ImageGallery extends Activity implements
         name=(TextView)findViewById(R.id.textView1);
         buttonDel=(Button)findViewById(R.id.buttonDel);
         buttonBack=(ImageButton)findViewById(R.id.imageButton1);
-
  
         mSwitcher = (ImageSwitcher) findViewById(R.id.switcher);
         mSwitcher.setFactory(this);
@@ -74,45 +70,33 @@ public class ImageGallery extends Activity implements
     	int max=thelabels.max();
     	
     	for (int i=0;i<=max;i++)
-    		
-    	{
     		if (thelabels.get(i)!="")
-    		{
     			count++;       			
-    		}
-    	}
     	
-    	bmlist=new Bitmap[count];
+    	bmlist = new Bitmap[count];
     	namelist = new String[count];
-    	count=0;
-    	for (int i=0;i<=max;i++)
-    	{
-    		if (thelabels.get(i)!="")
-    		{
+    	count = 0;
+    	for (int i=0;i<=max;i++) {
+    		if (thelabels.get(i)!="") {
     			File root = new File(mPath);
     			final String fname=thelabels.get(i);
     	        FilenameFilter pngFilter = new FilenameFilter() {
     	            public boolean accept(File dir, String name) {
     	                return name.toLowerCase().startsWith(fname.toLowerCase()+"-");
-    	            
-    	        };
+    	            };
     	        };
     	        File[] imageFiles = root.listFiles(pngFilter);
-    	        if (imageFiles.length>0)
-    	        {
+    	        if (imageFiles.length>0) {
     	        	InputStream is;
 					try {
 						is = new FileInputStream(imageFiles[0]);
 						
 						bmlist[count]=BitmapFactory.decodeStream(is);
 						namelist[count]=thelabels.get(i);
-						
-						} catch (FileNotFoundException e) {
-						// TODO Auto-generated catch block
-							Log.e("File erro", e.getMessage()+" "+e.getCause());
-							e.printStackTrace();
+					} catch (FileNotFoundException e) {
+						Log.e("File erro", e.getMessage()+" "+e.getCause());
+						e.printStackTrace();
 					}
-    	        	
     	        }
     			count++;       			
     		}
@@ -125,47 +109,36 @@ public class ImageGallery extends Activity implements
         
         buttonBack.setOnClickListener(new View.OnClickListener() {
         	public void onClick(View v) {
-        		
         		finish();
-        		
         	}
         });
         
         buttonDel.setOnClickListener(new View.OnClickListener() {
         	public void onClick(View v) {
-        	
         		File root = new File(mPath);
-    			
     	        FilenameFilter pngFilter = new FilenameFilter() {
     	            public boolean accept(File dir, String n) {
     	            	String s=name.getText().toString();
     	                return n.toLowerCase().startsWith(s.toLowerCase()+"-");
     	            
-    	        };
+    	            };
     	        };
     	        File[] imageFiles = root.listFiles(pngFilter);
     	        for (File image : imageFiles) {
     	        	image.delete();
-    	        int i;
-    	        for (i=0;i<count;i++)
-    	        {
-    	        	if (namelist[i].equalsIgnoreCase(name.getText().toString()))
-    	        			{
+	    	        int i;
+	    	        for (i=0;i<count;i++) {
+	    	        	if (namelist[i].equalsIgnoreCase(name.getText().toString())) {
     	        			  int j;
-    	        			  for (j=i;j<count-1;j++)
-    	        			  {
+    	        			  for (j=i;j<count-1;j++) {
     	        				  namelist[j]=namelist[j+1];
     	        				  bmlist[j]=bmlist[j+1];
     	        			  }
     	        			  count--;
     	        			  refresh();
-    	        			  //     	        			  finish();
-    	        			  // startActivity(getIntent());
-    	        			  
-    	        			  //
     	        			  break;
-    	        			}
-    	        }
+    	        		}
+	    	        }
     	        }
         	}
         });
@@ -176,7 +149,6 @@ public class ImageGallery extends Activity implements
     }
     
     public void onItemSelected(AdapterView<?> parent, View v, int position, long id) {
-        //mSwitcher.setImageURI(bmlist[0]);
     	mSwitcher.setImageDrawable(new BitmapDrawable(getResources(),bmlist[position]));
     	name.setText(namelist[position]);
     }
@@ -201,8 +173,6 @@ public class ImageGallery extends Activity implements
         }
  
         public int getCount() {
-        	
-        	
             return count;
         }
  
@@ -217,20 +187,11 @@ public class ImageGallery extends Activity implements
         public View getView(int position, View convertView, ViewGroup parent) {
             ImageView i = new ImageView(mContext);
             i.setImageBitmap(bmlist[position]);
-            
-           // i.setImageResource(mThumbIds[position]);
-         
             i.setAdjustViewBounds(true);
             i.setLayoutParams(new Gallery.LayoutParams(
                     LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
- //           i.setBackgroundResource(R.drawable.picture_frame);
             return i;
         }
- 
         private Context mContext;
- 
     }
- 
- 
- 
 }

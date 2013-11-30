@@ -4,12 +4,10 @@ import static  com.googlecode.javacv.cpp.opencv_highgui.*;
 import static  com.googlecode.javacv.cpp.opencv_core.*;
 
 import static  com.googlecode.javacv.cpp.opencv_imgproc.*;
-import static com.googlecode.javacv.cpp.opencv_contrib.*;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FilenameFilter;
-import java.util.ArrayList;
 
 import org.opencv.android.Utils;
 import org.opencv.core.Mat;
@@ -20,9 +18,7 @@ import com.googlecode.javacv.cpp.opencv_core.IplImage;
 import com.googlecode.javacv.cpp.opencv_core.MatVector;
 
 import android.graphics.Bitmap;
-import android.os.Environment;
 import android.util.Log;
-import android.widget.Toast;
 
 public  class PersonRecognizer {
 	
@@ -37,18 +33,13 @@ public  class PersonRecognizer {
 	 private int mProb=999;
 	
 	 
-    PersonRecognizer(String path)
-    {
-      faceRecognizer =  com.googlecode.javacv.cpp.opencv_contrib.createLBPHFaceRecognizer(2,8,8,8,200);
-  	 // path=Environment.getExternalStorageDirectory()+"/facerecog/faces/";
-     mPath=path;
-     labelsFile= new labels(mPath);
-     
-  
+    PersonRecognizer(String path) {
+    	faceRecognizer =  com.googlecode.javacv.cpp.opencv_contrib.createLBPHFaceRecognizer(2,8,8,8,200);
+    	mPath=path;
+    	labelsFile= new labels(mPath);
     }
     
-    void changeRecognizer(int nRec)
-    {
+    void changeRecognizer(int nRec) {
     	switch(nRec) {
     	case 0: faceRecognizer = com.googlecode.javacv.cpp.opencv_contrib.createLBPHFaceRecognizer(1,8,8,8,100);
     			break;
@@ -58,7 +49,6 @@ public  class PersonRecognizer {
     			break;
     	}
     	train();
-    	
     }
     
 	void add(Mat m, String description) {
@@ -73,23 +63,18 @@ public  class PersonRecognizer {
 			count++;
 			bmp.compress(Bitmap.CompressFormat.JPEG, 100, f);
 			f.close();
-
 		} catch (Exception e) {
 			Log.e("error",e.getCause()+" "+e.getMessage());
 			e.printStackTrace();
-			
 		}
 	}
 	
 	public boolean train() {
-	 	
 		File root = new File(mPath);
-
         FilenameFilter pngFilter = new FilenameFilter() {
             public boolean accept(File dir, String name) {
                 return name.toLowerCase().endsWith(".jpg");
-            
-        };
+            };
         };
 
         File[] imageFiles = root.listFiles(pngFilter);
@@ -141,16 +126,14 @@ public  class PersonRecognizer {
         	if (labelsFile.max()>1)
         		faceRecognizer.train(images, labels);
         labelsFile.Save();
-	return true;
+        return true;
 	}
 	
-	public boolean canPredict()
-	{
+	public boolean canPredict() {
 		if (labelsFile.max()>1)
 			return true;
 		else
 			return false;
-		
 	}
 	
 	public String predict(Mat m) {
@@ -159,85 +142,61 @@ public  class PersonRecognizer {
 		int n[] = new int[1];
 		double p[] = new double[1];
 		IplImage ipl = MatToIplImage(m,WIDTH, HEIGHT);
-//		IplImage ipl = MatToIplImage(m,-1, -1);
 		
 		faceRecognizer.predict(ipl, n, p);
 		
 		if (n[0]!=-1)
-		 mProb=(int)p[0];
+			mProb=(int)p[0];
 		else
 			mProb=-1;
-	//	if ((n[0] != -1)&&(p[0]<95))
 		if (n[0] != -1)
 			return labelsFile.get(n[0]);
 		else
 			return "Unkown";
 	}
-
-
 	
-
-	  IplImage MatToIplImage(Mat m,int width,int heigth)
-	  {
-		 
-		  
-		   Bitmap bmp=Bitmap.createBitmap(m.width(), m.height(), Bitmap.Config.ARGB_8888);
-		  
-		   
-		   Utils.matToBitmap(m, bmp);
-		   return BitmapToIplImage(bmp,width, heigth);
-			
-	  }
+	IplImage MatToIplImage(Mat m,int width,int heigth) {
+	   Bitmap bmp=Bitmap.createBitmap(m.width(), m.height(), Bitmap.Config.ARGB_8888);
+	   Utils.matToBitmap(m, bmp);
+	   return BitmapToIplImage(bmp,width, heigth);
+	}
 
 	IplImage BitmapToIplImage(Bitmap bmp, int width, int height) {
-
 		if ((width != -1) || (height != -1)) {
 			Bitmap bmp2 = Bitmap.createScaledBitmap(bmp, width, height, false);
 			bmp = bmp2;
 		}
-
 		IplImage image = IplImage.create(bmp.getWidth(), bmp.getHeight(),
 				IPL_DEPTH_8U, 4);
-
 		bmp.copyPixelsToBuffer(image.getByteBuffer());
-		
 		IplImage grayImg = IplImage.create(image.width(), image.height(),
 				IPL_DEPTH_8U, 1);
-
 		cvCvtColor(image, grayImg, opencv_imgproc.CV_BGR2GRAY);
-
 		return grayImg;
 	}
 
 
 	  
-	protected void SaveBmp(Bitmap bmp,String path)
-	  {
-			FileOutputStream file;
-			try {
-				file = new FileOutputStream(path , true);
-			
-			bmp.compress(Bitmap.CompressFormat.JPEG,100,file); 	
-		    file.close();
-			}
-		    catch (Exception e) {
-				// TODO Auto-generated catch block
-		    	Log.e("",e.getMessage()+e.getCause());
-				e.printStackTrace();
-			}
+	protected void SaveBmp(Bitmap bmp,String path) {
+		FileOutputStream file;
+		try {
+			file = new FileOutputStream(path , true);
 		
-	  }
+		bmp.compress(Bitmap.CompressFormat.JPEG,100,file); 	
+	    file.close();
+		}
+	    catch (Exception e) {
+	    	Log.e("",e.getMessage()+e.getCause());
+			e.printStackTrace();
+		}
+	}
 	
 
 	public void load() {
 		train();
-		
 	}
 
 	public int getProb() {
-		// TODO Auto-generated method stub
 		return mProb;
 	}
-
-
 }

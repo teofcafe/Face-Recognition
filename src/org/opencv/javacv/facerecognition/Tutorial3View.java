@@ -5,12 +5,14 @@ import java.util.List;
 
 import org.opencv.android.JavaCameraView;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.hardware.Camera;
 import android.hardware.Camera.PictureCallback;
 import android.hardware.Camera.Size;
+import android.os.Build;
 import android.util.AttributeSet;
 import android.util.Log;
 
@@ -20,7 +22,6 @@ public class Tutorial3View extends JavaCameraView {
 
     public Tutorial3View(Context context, AttributeSet attrs) {
         super(context, attrs);
-     
     }
 
     public List<String> getEffectList() {
@@ -60,33 +61,27 @@ public class Tutorial3View extends JavaCameraView {
         connectCamera(getWidth(), getHeight());
     }
     
-    public void setAutofocus()
-    {
+    @TargetApi(Build.VERSION_CODES.GINGERBREAD)
+	public void setAutofocus() {
     	Camera.Parameters parameters = mCamera.getParameters();
     	parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_CONTINUOUS_VIDEO);
-//    	 if (parameters.isVideoStabilizationSupported())
-//         {
-//      	   parameters.setVideoStabilization(true);
-//         }
-    	 mCamera.setParameters(parameters);
-		     
+    	mCamera.setParameters(parameters);
     }
-    public void setCamFront()
-    {
+    public void setCamFront() {
     	 disconnectCamera();
     	 setCameraIndex(org.opencv.android.CameraBridgeViewBase.CAMERA_ID_FRONT );
     	 connectCamera(getWidth(), getHeight());
     }
-    public void setCamBack()
-    {
+    
+    public void setCamBack() {
     	 disconnectCamera();    	 
     	 setCameraIndex(org.opencv.android.CameraBridgeViewBase.CAMERA_ID_BACK );
     	 connectCamera(getWidth(), getHeight());
     }
 
-    public int numberCameras()
-    {
-     return	Camera.getNumberOfCameras();
+    @TargetApi(Build.VERSION_CODES.GINGERBREAD)
+	public int numberCameras() {
+    	return Camera.getNumberOfCameras();
     }
     
     public Size getResolution() {
@@ -96,7 +91,6 @@ public class Tutorial3View extends JavaCameraView {
     public void takePicture(final String fileName) {
         Log.i(TAG, "Tacking picture");
         PictureCallback callback = new PictureCallback() {
-
             private String mPictureFileName = fileName;
 
             @Override
@@ -113,7 +107,6 @@ public class Tutorial3View extends JavaCameraView {
                 }
             }
         };
-
         mCamera.takePicture(null, null, callback);
     }
 }

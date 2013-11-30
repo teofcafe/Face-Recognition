@@ -8,21 +8,17 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.StringTokenizer;
 
-
-import android.os.Environment;
 import android.util.Log;
 
 
 public class labels {
 
 	String mPath;
-	 class label
-	{
+	 class label {
 		public label(String s, int n) {
 			thelabel=s;
 			num=n;
@@ -31,22 +27,18 @@ public class labels {
 		int num;
 		String thelabel;
 	}
-	//	HashMap<Integer,String> thelist=new HashMap<Integer,String>();
 
 	ArrayList<label> thelist=new ArrayList<label>();
 	
-	public labels(String Path)
-	{
+	public labels(String Path) {
 		mPath=Path;
 	}
 	
-	public boolean isEmpty()
-	{
+	public boolean isEmpty() {
 		return !(thelist.size()>0);
 	}
 	
-	public void add(String s,int n)
-	{
+	public void add(String s,int n) {
 		thelist.add( new label(s,n));
 	}
 	
@@ -70,8 +62,7 @@ public class labels {
 	  return -1;
 	}
 	
-	public void Save()
-	{
+	public void Save() {
 		try {
 			File f=new File (mPath+"faces.txt");
 			f.createNewFile();
@@ -84,12 +75,9 @@ public class labels {
 			}
 			bw.close();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			Log.e("error",e.getMessage()+" "+e.getCause());
 			e.printStackTrace();
 		}
-		
-		
 	}
 	
 	public void Read() {
@@ -102,6 +90,7 @@ public class labels {
 
 			String strLine;
 			thelist= new ArrayList<label>();
+			
 			// Read File Line By Line
 			while ((strLine = br.readLine()) != null) {
 				StringTokenizer tokens=new StringTokenizer(strLine,",");
@@ -113,7 +102,6 @@ public class labels {
 			br.close();
 			fstream.close();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -127,5 +115,4 @@ public class labels {
 		}
 		return m;
 	}
-
 }
