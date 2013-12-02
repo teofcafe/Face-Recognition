@@ -26,7 +26,6 @@ public  class PersonRecognizer {
 	FaceRecognizer faceRecognizer;
 	String mPath;
 	int count=0;
-	labels labelsFile;
 
 	 static  final int WIDTH= 128;
 	 static  final int HEIGHT= 128;;
@@ -36,7 +35,6 @@ public  class PersonRecognizer {
     PersonRecognizer(String path) {
     	faceRecognizer =  com.googlecode.javacv.cpp.opencv_contrib.createLBPHFaceRecognizer(2,8,8,8,200);
     	mPath=path;
-    	labelsFile= new labels(mPath);
     }
     
     void changeRecognizer(int nRec) {
@@ -71,25 +69,22 @@ public  class PersonRecognizer {
 	
 	public boolean train() {
 		File root = new File(mPath);
-        FilenameFilter pngFilter = new FilenameFilter() {
+        FilenameFilter jpgFilter = new FilenameFilter() {
             public boolean accept(File dir, String name) {
                 return name.toLowerCase().endsWith(".jpg");
             };
         };
 
-        File[] imageFiles = root.listFiles(pngFilter);
+        File[] imageFiles = root.listFiles(jpgFilter);
 
         MatVector images = new MatVector(imageFiles.length);
 
         int[] labels = new int[imageFiles.length];
 
         int counter = 0;
-        int label;
 
         IplImage img=null;
         IplImage grayImg;
-
-        int i1=mPath.length();
        
    
         for (File image : imageFiles) {
@@ -104,36 +99,23 @@ public  class PersonRecognizer {
             int i3=p.lastIndexOf(".");
             int icount=Integer.parseInt(p.substring(i2+1,i3)); 
             if (count<icount) count++;
-            
-            String description=p.substring(i1,i2);
-            
-            if (labelsFile.get(description)<0)
-            	labelsFile.add(description, labelsFile.max()+1);
-            
-            label = labelsFile.get(description);
 
             grayImg = IplImage.create(img.width(), img.height(), IPL_DEPTH_8U, 1);
 
             cvCvtColor(img, grayImg, CV_BGR2GRAY);
-
             images.put(counter, grayImg);
-
-            labels[counter] = label;
 
             counter++;
         }
+        
         if (counter>0)
-        	if (labelsFile.max()>1)
         		faceRecognizer.train(images, labels);
-        labelsFile.Save();
         return true;
 	}
 	
 	public boolean canPredict() {
-		if (labelsFile.max()>1)
+		//Implementar maybe
 			return true;
-		else
-			return false;
 	}
 	
 	public String predict(Mat m) {
@@ -150,9 +132,8 @@ public  class PersonRecognizer {
 		else
 			mProb=-1;
 		if (n[0] != -1)
-			return labelsFile.get(n[0]);
-		else
-			return "Unkown";
+			return "Unkown";//Supostamente o nome
+		return "Unkown";
 	}
 	
 	IplImage MatToIplImage(Mat m,int width,int heigth) {
@@ -174,16 +155,14 @@ public  class PersonRecognizer {
 		cvCvtColor(image, grayImg, opencv_imgproc.CV_BGR2GRAY);
 		return grayImg;
 	}
-
-
 	  
 	protected void SaveBmp(Bitmap bmp,String path) {
 		FileOutputStream file;
 		try {
 			file = new FileOutputStream(path , true);
 		
-		bmp.compress(Bitmap.CompressFormat.JPEG,100,file); 	
-	    file.close();
+			bmp.compress(Bitmap.CompressFormat.JPEG,100,file); 	
+			file.close();
 		}
 	    catch (Exception e) {
 	    	Log.e("",e.getMessage()+e.getCause());
