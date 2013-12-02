@@ -134,7 +134,6 @@ public class FdActivity extends Activity implements CvCameraViewListener2 {
 					}
 	
 					mOpenCvCameraView.enableView();
-	
 				} break;
 				default:
 				{
@@ -163,7 +162,7 @@ public class FdActivity extends Activity implements CvCameraViewListener2 {
 
 		mOpenCvCameraView = (Tutorial3View) findViewById(R.id.tutorial3_activity_java_surface_view);
 		mOpenCvCameraView.setCvCameraViewListener(this);
-
+		
 		imagesToAcceptUri=getFilesDir()+"/ImagesToAccept/";
 		
 		toggleButtonTrain=(Button)findViewById(R.id.takePhotoButton);
@@ -224,13 +223,6 @@ public class FdActivity extends Activity implements CvCameraViewListener2 {
 	public Mat onCameraFrame(CvCameraViewFrame inputFrame) {
 		Mat mRgba = inputFrame.rgba();
 		Mat mGray = inputFrame.gray();
-		
-		if (mAbsoluteFaceSize == 0) {
-			int height = mGray.rows();
-			if (Math.round(height * mRelativeFaceSize) > 0) {
-				mAbsoluteFaceSize = Math.round(height * mRelativeFaceSize);
-			}
-		}
 		
 		MatOfRect faces = new MatOfRect();
 

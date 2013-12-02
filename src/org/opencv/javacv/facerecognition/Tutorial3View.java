@@ -4,6 +4,7 @@ import java.io.FileOutputStream;
 import java.util.List;
 
 import org.opencv.android.JavaCameraView;
+import org.opencv.highgui.Highgui;
 
 import android.annotation.TargetApi;
 import android.content.Context;
@@ -35,7 +36,7 @@ public class Tutorial3View extends JavaCameraView {
     public String getEffect() {
         return mCamera.getParameters().getColorEffect();
     }
-
+    
     public void setEffect(String effect) {
         Camera.Parameters params = mCamera.getParameters();
         params.setColorEffect(effect);
