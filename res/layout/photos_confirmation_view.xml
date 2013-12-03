@@ -4,11 +4,15 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-    <Gallery
-        android:id="@+id/gallery1"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="0.92" />
+   <GridView
+	   android:id="@+id/gridview"
+	   android:layout_width="fill_parent" 
+	   android:layout_height="fill_parent"
+	   android:columnWidth="90dp"
+	   android:numColumns="auto_fit"
+	   android:gravity="center"
+	   android:layout_weight="0.10"
+	/>
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -28,6 +32,14 @@
             android:layout_height="match_parent"
             android:layout_weight="0.92"
             android:text="@string/SDelete" />
+
+        <ImageButton
+            android:id="@+id/imageButton2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="0.92"
+            android:src="@drawable/lightbulb" />
+
     </LinearLayout>
 
 </LinearLayout>

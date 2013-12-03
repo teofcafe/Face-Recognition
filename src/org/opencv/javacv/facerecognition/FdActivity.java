@@ -28,6 +28,7 @@ import org.opencv.objdetect.CascadeClassifier;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -70,6 +71,8 @@ public class FdActivity extends Activity implements CvCameraViewListener2 {
 	private float                  mRelativeFaceSize   = 0.2f;
 	private int                    mAbsoluteFaceSize   = 0;
 
+	public final static String EXTRA_MESSAGE = "IMAGES_PATH";
+	
 	String imagesToAcceptUri = null;
 
 	private Tutorial3View   mOpenCvCameraView;
@@ -102,7 +105,6 @@ public class FdActivity extends Activity implements CvCameraViewListener2 {
 					fr=new PersonRecognizer(imagesToAcceptUri);
 					String s = getResources().getString(R.string.Straininig);
 					Toast.makeText(getApplicationContext(),s, Toast.LENGTH_LONG).show();
-					fr.load();
 	
 					try {
 						// load cascade file from application resources
@@ -174,6 +176,17 @@ public class FdActivity extends Activity implements CvCameraViewListener2 {
 			}
 		});
 
+		ImageButton openPhotosConfirmationMenu = (ImageButton) findViewById(R.id.imageButtonAccept);
+		openPhotosConfirmationMenu.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(getApplicationContext(), ImageGallery.class);
+				intent.putExtra(EXTRA_MESSAGE, imagesToAcceptUri);
+				startActivity(intent);
+			}
+		});
+		
 		imCamera.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				if (mChooseCamera==frontCam) {
