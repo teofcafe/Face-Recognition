@@ -5,6 +5,7 @@ import java.io.FileOutputStream;
 import org.opencv.android.Utils;
 import org.opencv.core.Mat;
 import org.opencv.javacv.facerecognition.FdActivity;
+import org.opencv.javacv.facerecognition.matdecorator.FaceIsolationDecorator;
 
 import android.graphics.Bitmap;
 import android.util.Log;
@@ -26,11 +27,12 @@ public final class SaveOneFrameState extends CameraState {
 	
 	@Override
 	public Mat execute(Mat faceImage) {
-		Bitmap bmp = Bitmap.createBitmap(faceImage.width(), 
-										faceImage.height(), 
+		Mat isolatedFace = new FaceIsolationDecorator(cameraActivity).decorate(faceImage);
+		Bitmap bmp = Bitmap.createBitmap(isolatedFace.width(), 
+				isolatedFace.height(), 
 										Bitmap.Config.ARGB_8888);
 		
-		Utils.matToBitmap(faceImage,bmp);
+		Utils.matToBitmap(isolatedFace,bmp);
 		bmp = Bitmap.createScaledBitmap(bmp, WIDTH, HEIGHT, false);
 		
 		FileOutputStream imageFile = null;
