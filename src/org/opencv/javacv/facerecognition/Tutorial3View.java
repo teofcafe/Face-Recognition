@@ -4,7 +4,6 @@ import java.io.FileOutputStream;
 import java.util.List;
 
 import org.opencv.android.JavaCameraView;
-import org.opencv.highgui.Highgui;
 
 import android.annotation.TargetApi;
 import android.content.Context;

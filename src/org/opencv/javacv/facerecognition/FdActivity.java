@@ -11,18 +11,14 @@ import org.opencv.android.CameraBridgeViewBase.CvCameraViewFrame;
 
 import org.opencv.android.LoaderCallbackInterface;
 import org.opencv.android.OpenCVLoader;
-import org.opencv.core.Core;
 import org.opencv.core.Mat;
-import org.opencv.core.MatOfRect;
-import org.opencv.core.Rect;
-import org.opencv.core.Scalar;
-import org.opencv.core.Size;
 import org.opencv.javacv.facerecognition.R;
 import org.opencv.javacv.facerecognition.camerastate.CameraState;
 import org.opencv.javacv.facerecognition.camerastate.IDLEState;
 import org.opencv.javacv.facerecognition.camerastate.SaveOneFrameState;
 
 import org.opencv.android.CameraBridgeViewBase.CvCameraViewListener2;
+
 import org.opencv.objdetect.CascadeClassifier;
 
 import android.annotation.TargetApi;
@@ -30,11 +26,9 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 
-import android.graphics.Bitmap;
 import android.os.Bundle;
 
 import android.os.Build;
-import android.os.Handler;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -42,9 +36,6 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.TextView;
-import android.widget.Toast;
-import android.widget.ToggleButton;
 
 
 
@@ -54,7 +45,6 @@ import android.widget.ToggleButton;
 public class FdActivity extends Activity implements CvCameraViewListener2 {
 
 	private static final String    TAG                 = "OCVSample::Activity";
-	private static final Scalar    FACE_RECT_COLOR     = new Scalar(0, 255, 0, 255);
 	public static final int        JAVA_DETECTOR       = 0;
 	public static final int        NATIVE_DETECTOR     = 1;
 
@@ -63,20 +53,17 @@ public class FdActivity extends Activity implements CvCameraViewListener2 {
 
 	private MenuItem               nBackCam;
 	private MenuItem               mFrontCam;
-	private File                   mCascadeFile;
-	private CascadeClassifier      mJavaDetector;
+	public static File cascadeFile = null;
 
 	private String[]               mDetectorName;
 
-	private float                  mRelativeFaceSize   = 0.2f;
-	private int                    mAbsoluteFaceSize   = 0;
-
 	public final static String EXTRA_MESSAGE = "IMAGES_PATH";
+	public CascadeClassifier mJavaDetector = null;
 	
 	String imagesToAcceptUri = null;
 
 	private Tutorial3View   mOpenCvCameraView;
-	private CameraState cameraState = new IDLEState(this);
+	private CameraState cameraState = null;
 	private int mChooseCamera = backCam;
 	private int counter = 0;
 
@@ -103,38 +90,36 @@ public class FdActivity extends Activity implements CvCameraViewListener2 {
 					Log.i(TAG, "OpenCV loaded successfully");
 	
 					fr=new PersonRecognizer(imagesToAcceptUri);
-					String s = getResources().getString(R.string.Straininig);
-					Toast.makeText(getApplicationContext(),s, Toast.LENGTH_LONG).show();
-	
+					
 					try {
-						// load cascade file from application resources
-						InputStream is = getResources().openRawResource(R.raw.lbpcascade_frontalface);
-						File cascadeDir = getDir("cascade", Context.MODE_PRIVATE);
-						mCascadeFile = new File(cascadeDir, "lbpcascade.xml");
-						FileOutputStream os = new FileOutputStream(mCascadeFile);
-	
-						byte[] buffer = new byte[4096];
-						int bytesRead;
-						while ((bytesRead = is.read(buffer)) != -1) {
-							os.write(buffer, 0, bytesRead);
-						}
-						is.close();
-						os.close();
-	
-						mJavaDetector = new CascadeClassifier(mCascadeFile.getAbsolutePath());
-						if (mJavaDetector.empty()) {
-							Log.e(TAG, "Failed to load cascade classifier");
-							mJavaDetector = null;
-						} else
-							Log.i(TAG, "Loaded cascade classifier from " + mCascadeFile.getAbsolutePath());
-	
-						cascadeDir.delete();
-	
-					} catch (IOException e) {
-						e.printStackTrace();
-						Log.e(TAG, "Failed to load cascade. Exception thrown: " + e);
-					}
-	
+                        // load cascade file from application resources
+                        InputStream is = getResources().openRawResource(R.raw.lbpcascade_frontalface);
+                        File cascadeDir = getDir("cascade", Context.MODE_PRIVATE);
+                        File mCascadeFile = new File(cascadeDir, "lbpcascade.xml");
+                        FileOutputStream os = new FileOutputStream(mCascadeFile);
+
+                        byte[] buffer = new byte[4096];
+                        int bytesRead;
+                        while ((bytesRead = is.read(buffer)) != -1) {
+                            os.write(buffer, 0, bytesRead);
+                        }
+                        is.close();
+                        os.close();
+
+                        mJavaDetector = new CascadeClassifier(mCascadeFile.getAbsolutePath());
+                        if (mJavaDetector.empty()) {
+                            Log.e(TAG, "Failed to load cascade classifier");
+                            mJavaDetector = null;
+                        } else
+                            Log.i(TAG, "Loaded cascade classifier from " + mCascadeFile.getAbsolutePath());
+                        
+                        cascadeDir.delete();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                        Log.e(TAG, "Failed to load cascade. Exception thrown: " + e);
+                    }
+					
+					FdActivity.this.cameraState = new IDLEState(FdActivity.this);
 					mOpenCvCameraView.enableView();
 				} break;
 				default:
@@ -234,25 +219,7 @@ public class FdActivity extends Activity implements CvCameraViewListener2 {
 	//Fazer o release dos mats para libertar espaco talvez
 	@TargetApi(Build.VERSION_CODES.GINGERBREAD)
 	public Mat onCameraFrame(CvCameraViewFrame inputFrame) {
-		Mat mRgba = inputFrame.rgba();
-		Mat mGray = inputFrame.gray();
-		
-		MatOfRect faces = new MatOfRect();
-
-		//Detecta as faces e coloca na variavel faces
-		if (mJavaDetector != null)
-			mJavaDetector.detectMultiScale(mGray, faces, 1.1, 2, 2,
-					new Size(mAbsoluteFaceSize, mAbsoluteFaceSize), new Size());
-		
-		Rect[] facesArray = faces.toArray();
-		for(Rect face : facesArray)
-			this.cameraState.execute(mGray.submat(face));
-		
-		//Desenha o rectangulo a volta da face
-		for (int i = 0; i < facesArray.length; i++)
-			Core.rectangle(mRgba, facesArray[i].tl(), facesArray[i].br(), FACE_RECT_COLOR, 3);
-
-		return mRgba;
+		return this.cameraState.execute(inputFrame.rgba());
 	}
 
 

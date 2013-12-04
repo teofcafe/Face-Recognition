@@ -33,6 +33,6 @@ public class ImageGallery extends Activity {
 	
 	@Override
 	public void onPause() {
-		
+		super.onPause();
 	}
 }

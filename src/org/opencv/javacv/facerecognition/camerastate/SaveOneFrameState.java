@@ -25,7 +25,7 @@ public final class SaveOneFrameState extends CameraState {
 	}
 	
 	@Override
-	public void execute(Mat faceImage) {
+	public Mat execute(Mat faceImage) {
 		Bitmap bmp = Bitmap.createBitmap(faceImage.width(), 
 										faceImage.height(), 
 										Bitmap.Config.ARGB_8888);
@@ -44,6 +44,8 @@ public final class SaveOneFrameState extends CameraState {
 		
 		//Grava so um frame
 		this.cameraActivity.setCameraState(this.oldState);
+		
+		return faceImage;
 	}
 
 }

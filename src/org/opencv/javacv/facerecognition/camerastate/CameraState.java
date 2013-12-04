@@ -12,5 +12,5 @@ public abstract class CameraState {
 		this.cameraActivity = cameraActivity;
 	}
 	
-	public abstract void execute(Mat face);
+	public abstract Mat execute(Mat face);
 }
