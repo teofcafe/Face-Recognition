@@ -1,8 +1,10 @@
-package org.opencg.javac.facerecognition.cipher;
+package org.opencv.javacv.facerecognition.cipher;
 
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
+
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
@@ -10,24 +12,24 @@ import javax.crypto.NoSuchPaddingException;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
-public class TripleDESCipher implements CipherInterface{
-
+public class AESCipher implements CipherInterface{
+	
 	private final IvParameterSpec IV = new IvParameterSpec(new byte[8]);
 	private SecretKeySpec _chave;
 	private Cipher _cipher;
 
-	public TripleDESCipher(byte[] chave) {
+	public AESCipher(byte[] chave) {
 		
-		_chave = new SecretKeySpec(chave, "DESede");
+		_chave = new SecretKeySpec(chave, "AES");
 		
 		try {
 			
-			_cipher = Cipher.getInstance("DESede/CBC/PKCS5Padding");
+			_cipher = Cipher.getInstance("AES/CBC/NoPadding", "SunJCE");
 			
 		} catch (NoSuchAlgorithmException e) {
+		} catch (NoSuchProviderException e) {
 		} catch (NoSuchPaddingException e) {
 		}
-
 	}
 
 	@Override
@@ -41,20 +43,20 @@ public class TripleDESCipher implements CipherInterface{
 		} catch (InvalidAlgorithmParameterException e) {
 		}
 
-    	try {
-    		
+	    try {
+	    	
 			return _cipher.doFinal(conteudo);
 			
 		} catch (IllegalBlockSizeException e) {
 		} catch (BadPaddingException e) {
 		}
-    	
+	    
 		return null;
 	}
 
 	@Override
 	public byte[] decipher(byte[] conteudoCifrado) {
-		
+
 		try {
 			
 			_cipher.init(Cipher.DECRYPT_MODE, _chave, IV);
@@ -62,17 +64,17 @@ public class TripleDESCipher implements CipherInterface{
 		} catch (InvalidKeyException e) {
 		} catch (InvalidAlgorithmParameterException e) {
 		}
-
-    	try {
-    		
+		
+	    try {
+	    	
 			return _cipher.doFinal(conteudoCifrado);
 			
 		} catch (IllegalBlockSizeException e) {
 		} catch (BadPaddingException e) {
 		}
-    	
+	    
 		return null;
-		
 	}
+
 
 }

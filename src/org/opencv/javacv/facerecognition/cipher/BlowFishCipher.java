@@ -1,4 +1,4 @@
-package org.opencg.javac.facerecognition.cipher;
+package org.opencv.javacv.facerecognition.cipher;
 
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
