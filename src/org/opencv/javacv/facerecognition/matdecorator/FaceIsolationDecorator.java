@@ -34,6 +34,7 @@ public final class FaceIsolationDecorator extends MatDecorator{
 
 		if(facesArray.length > 0)
 			return grayFace.submat(facesArray[0]);
+		
 		//TODO Exception
 		return null;
 	}

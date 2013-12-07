@@ -17,18 +17,27 @@ import org.opencv.javacv.facerecognition.FdActivity;
 
 import org.opencv.objdetect.CascadeClassifier;
 
-public final class IDLEState extends CameraState {
+import android.util.Log;
 
-	private float mRelativeFaceSize = 0.2f;
-	private int mAbsoluteFaceSize = 0;
-	private CascadeClassifier javaDetector = null;
+public final class FaceDetectionState extends CameraState {
+
+	private static final float mRelativeFaceSize = 0.2f;
+	
 	private static final Scalar FACE_RECT_COLOR = new Scalar(0, 255, 0, 255);
 	
+	private static int mAbsoluteFaceSize = 0;
 	
-	public IDLEState(FdActivity cameraActivity) {
+	private CascadeClassifier javaDetector = null;
+	
+	
+	public FaceDetectionState(FdActivity cameraActivity) {
 		super(cameraActivity);
 		
-		this.javaDetector = cameraActivity.mJavaDetector;
+		javaDetector = new CascadeClassifier(FdActivity.CASCADE_FRONTAL_FACE_FILE_PATH);
+        
+		if (javaDetector != null && javaDetector.empty()) {
+            javaDetector = null;
+        }
 	}
 
 	@Override
@@ -36,6 +45,13 @@ public final class IDLEState extends CameraState {
 		Mat grayFace = new Mat();
 		
 		Imgproc.cvtColor(face, grayFace, Imgproc.COLOR_BGR2GRAY);
+		
+		if (mAbsoluteFaceSize == 0) {
+            int height = grayFace.rows();
+            if (Math.round(height * mRelativeFaceSize) > 0) {
+                mAbsoluteFaceSize = Math.round(height * mRelativeFaceSize);
+            }
+        }
 		
 		MatOfRect faces = new MatOfRect();
 
