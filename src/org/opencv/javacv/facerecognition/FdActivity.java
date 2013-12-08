@@ -14,6 +14,7 @@ import org.opencv.core.Mat;
 import org.opencv.javacv.facerecognition.R;
 import org.opencv.javacv.facerecognition.camerastate.CameraState;
 import org.opencv.javacv.facerecognition.camerastate.FaceDetectionState;
+import org.opencv.javacv.facerecognition.camerastate.FaceRecognitionState;
 import org.opencv.javacv.facerecognition.camerastate.SaveOneFrameState;
 
 import org.opencv.android.CameraBridgeViewBase.CvCameraViewListener2;
@@ -51,8 +52,10 @@ public class FdActivity extends Activity implements CvCameraViewListener2 {
 	public CascadeClassifier mJavaDetector = null;
 	public static String APP_PATH = null;
 	public static String CASCADES_PATH = null;
+	public static String YML_FACE_MODEL_PATH = null;
 	
-	private static String IMAGES_TO_ACCEPT_PATH = null;
+	public static String IMAGES_TO_ACCEPT_PATH = null;
+	public static String YML_FACE_MODEL_FILE_PATH = null;
 	public static String CASCADE_FRONTAL_FACE_FILE_PATH = null;
 
 	
@@ -67,7 +70,6 @@ public class FdActivity extends Activity implements CvCameraViewListener2 {
 	private int mChooseCamera = backCam;
 	private int counter = 0;
 
-	PersonRecognizer fr;
 	Button toggleButtonTrain;
 	ImageButton imCamera;
 
@@ -103,7 +105,9 @@ public class FdActivity extends Activity implements CvCameraViewListener2 {
 			switch (status) {
 				case LoaderCallbackInterface.SUCCESS:
 				{	
-					if(loadCascadeFile(R.raw.lbpcascade_frontalface, FdActivity.CASCADE_FRONTAL_FACE_FILE_PATH))
+					if(new File(FdActivity.YML_FACE_MODEL_FILE_PATH).exists())
+						FdActivity.this.cameraState = new FaceRecognitionState(FdActivity.this);
+					else if(loadCascadeFile(R.raw.lbpcascade_frontalface, FdActivity.CASCADE_FRONTAL_FACE_FILE_PATH))
 						FdActivity.this.cameraState = new FaceDetectionState(FdActivity.this);
 					
 					mOpenCvCameraView.enableView();
@@ -129,9 +133,13 @@ public class FdActivity extends Activity implements CvCameraViewListener2 {
 		FdActivity.CASCADES_PATH = FdActivity.APP_PATH + "/cascades/";
 		
 		FdActivity.IMAGES_TO_ACCEPT_PATH = FdActivity.APP_PATH + "/ImagesToAccept/";
+		FdActivity.YML_FACE_MODEL_PATH = FdActivity.APP_PATH + "/facemodel/";
+		
+		FdActivity.YML_FACE_MODEL_FILE_PATH = FdActivity.APP_PATH + "/facemodel/facemodel.yml";
 		FdActivity.CASCADE_FRONTAL_FACE_FILE_PATH = FdActivity.CASCADES_PATH + "lbpfrontalcascade.xml";
 		
 		(new File(FdActivity.CASCADES_PATH)).mkdirs();
+		(new File(FdActivity.YML_FACE_MODEL_PATH)).mkdirs();
 		(new File(FdActivity.IMAGES_TO_ACCEPT_PATH)).mkdirs();
 		
 		mOpenCvCameraView = (Tutorial3View) findViewById(R.id.tutorial3_activity_java_surface_view);
