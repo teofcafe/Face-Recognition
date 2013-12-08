@@ -7,6 +7,7 @@ import static com.googlecode.javacv.cpp.opencv_imgproc.cvCvtColor;
 
 import java.io.File;
 import java.io.FilenameFilter;
+import java.util.ArrayList;
 
 import com.googlecode.javacv.cpp.opencv_contrib.FaceRecognizer;
 import com.googlecode.javacv.cpp.opencv_core.IplImage;
@@ -20,11 +21,15 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
-public class ImageGallery extends Activity {
+public class ImageGallery extends Activity implements AdapterView.OnItemSelectedListener  {
+	private GridView gridview;
+	private ArrayList<Integer> listaPintados = new ArrayList<Integer>();
+	private int forDelete = 0;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -34,7 +39,7 @@ public class ImageGallery extends Activity {
 		Intent intent = getIntent();
 	    String imagesPath = intent.getStringExtra(FdActivity.EXTRA_MESSAGE);
 		
-		GridView gridview = (GridView) findViewById(R.id.gridview);
+		gridview = (GridView) findViewById(R.id.gridview);
 	    gridview.setAdapter(new ImageAdapter(this.getBaseContext(), imagesPath));
 
 	    gridview.setOnItemClickListener(new OnItemClickListener() {
@@ -42,8 +47,34 @@ public class ImageGallery extends Activity {
 	    	@Override
 	    	public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
 	            Toast.makeText(ImageGallery.this, "" + position, Toast.LENGTH_SHORT).show();
+	            gridview.setSelected(true);
+		        gridview.setSelection(position);
+	   
+		            if (listaPintados.contains(position)){
+		            	v.setBackgroundColor(0x00000000);
+		            	listaPintados.remove(Integer.valueOf(position));
+		            	}
+		            
+		               else {
+		                  listaPintados.add(position);
+			              v.setBackgroundColor(0xFF00FF00);
+		               }
 	        }
 	    });
+	    
+	    final Button delbutton = (Button) findViewById(R.id.buttonDel);
+	    delbutton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+            	
+            	for(int imageID: listaPintados){
+            		
+            		/*forDelete = ((listaPintados.size()) -1) - imageID;
+            		System.out.println("ID "+ imageID + " forDelete "+ forDelete);*/
+            		if(!new File(FdActivity.IMAGES_TO_ACCEPT_PATH + String.valueOf(imageID) + ".jpg" ).delete())
+            			Toast.makeText(ImageGallery.this, "Erro ao Apagar a imagem " + imageID, Toast.LENGTH_SHORT).show();
+            	}
+            }
+        });
 	    
 	    ImageButton acceptAllButton = (ImageButton) findViewById(R.id.imageButton2);
 	    acceptAllButton.setOnClickListener(new OnClickListener() {
@@ -90,5 +121,16 @@ public class ImageGallery extends Activity {
 	@Override
 	public void onPause() {
 		super.onPause();
+	}
+
+	@Override
+	public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2,
+			long arg3) {
+		
+	}
+
+	@Override
+	public void onNothingSelected(AdapterView<?> arg0) {
+		
 	}
 }
