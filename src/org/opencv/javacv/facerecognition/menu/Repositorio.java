@@ -1,12 +1,9 @@
 package org.opencv.javacv.facerecognition.menu;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
-
 import org.opencv.javacv.facerecognition.FdActivity;
 import org.opencv.javacv.facerecognition.R;
-
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
@@ -15,7 +12,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -34,10 +30,10 @@ public class Repositorio extends Fragment {
     	new File(FdActivity.REPOSITORY_PATH + "fl1/fl2").mkdir();
     	new File(FdActivity.REPOSITORY_PATH + "fl2").mkdir();
     	new File(FdActivity.REPOSITORY_PATH + "fl2").mkdir();
+    	new File(FdActivity.REPOSITORY_PATH + "retroceder").mkdir();
     	
     	 View rootView = inflater.inflate(R.layout.repositorio, container, false);
     	
-
         return rootView;
     }
     

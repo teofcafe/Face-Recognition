@@ -1,7 +1,6 @@
 package org.opencv.javacv.facerecognition.menu;
 
 import org.opencv.javacv.facerecognition.R;
-
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;

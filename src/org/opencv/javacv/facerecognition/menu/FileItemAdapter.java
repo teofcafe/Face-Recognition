@@ -1,10 +1,7 @@
 package org.opencv.javacv.facerecognition.menu;
 
 import java.io.File;
-import java.util.List;
-
 import org.opencv.javacv.facerecognition.R;
-
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
