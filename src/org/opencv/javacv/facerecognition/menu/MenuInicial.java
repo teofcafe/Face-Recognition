@@ -12,9 +12,9 @@ import android.app.FragmentTransaction;
 public class MenuInicial extends FragmentActivity implements
 ActionBar.TabListener {
 
-	private ViewPager viewPager;
-	private Tabs mAdapter;
-	private ActionBar actionBar;
+	private ViewPager viewPager = null;
+	private Tabs mAdapter = null;
+	private ActionBar actionBar = null;
 	// Tab titles
 	private String[] tabs = { "Repositório", "Configurações"};
 
@@ -22,10 +22,11 @@ ActionBar.TabListener {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.menu_inicial);
-
+		
 		// Initilization
 		viewPager = (ViewPager) findViewById(R.id.menu_inicial);
 		actionBar = getActionBar();
+		if(actionBar == null) return;
 		mAdapter = new Tabs(getSupportFragmentManager());
 
 		viewPager.setAdapter(mAdapter);

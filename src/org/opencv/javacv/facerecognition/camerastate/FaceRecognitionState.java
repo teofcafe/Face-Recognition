@@ -9,16 +9,15 @@ import org.opencv.core.Mat;
 import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
 import org.opencv.javacv.facerecognition.FdActivity;
+import org.opencv.javacv.facerecognition.menu.MenuInicial;
 import org.opencv.javacv.facerecognition.utils.FaceDetectionUtils;
 
 import com.googlecode.javacv.cpp.opencv_imgproc;
 import com.googlecode.javacv.cpp.opencv_contrib.FaceRecognizer;
 import com.googlecode.javacv.cpp.opencv_core.IplImage;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.Color;
-import android.util.Log;
-import android.widget.Toast;
 
 public class FaceRecognitionState extends CameraState {
 	private final static Scalar COR_VERDE = new Scalar(0, 255, 0, 255);
@@ -52,7 +51,13 @@ public class FaceRecognitionState extends CameraState {
 		
 		if(confidence[0] > 70)
 			FACE_RECT_COLOR = COR_VERDE;
-		else FACE_RECT_COLOR = COR_ROSA;
+		else {
+			FACE_RECT_COLOR = COR_ROSA;
+			
+			Intent intent = new Intent(super.cameraActivity.getApplicationContext(), MenuInicial.class);
+			intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+			super.cameraActivity.getApplicationContext().startActivity(intent);
+		}
 		
 		//super.cameraActivity.setCameraState(this/*Detecta Olhos*/);
 		
