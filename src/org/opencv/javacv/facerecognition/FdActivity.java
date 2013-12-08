@@ -36,34 +36,30 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageButton;
 
-
-
-
-
-
 public class FdActivity extends Activity implements CvCameraViewListener2 {
 
 	private static final String TAG = "OCVSample::Activity";
 	public final static String EXTRA_MESSAGE = "IMAGES_PATH";
-	
+
 	private static final int frontCam =1;
 	private static final int backCam =2;
-	
+
 	public CascadeClassifier mJavaDetector = null;
 	public static String APP_PATH = null;
 	public static String CASCADES_PATH = null;
 	public static String YML_FACE_MODEL_PATH = null;
-	
+	public static String REPOSITORY_PATH = null;
+
 	public static String IMAGES_TO_ACCEPT_PATH = null;
 	public static String YML_FACE_MODEL_FILE_PATH = null;
 	public static String CASCADE_FRONTAL_FACE_FILE_PATH = null;
 
-	
-	
+
+
 	private MenuItem               nBackCam;
 	private MenuItem               mFrontCam;
-	
-	
+
+
 
 	private Tutorial3View   mOpenCvCameraView;
 	private CameraState cameraState = null;
@@ -77,45 +73,45 @@ public class FdActivity extends Activity implements CvCameraViewListener2 {
 
 	private boolean loadCascadeFile(int cascadeFileId, String dest) {
 		File cascadeFile = new File(dest);
-		
-		if(cascadeFile.exists()) return true;
-		
-		try {
-            // load cascade file from application resources
-            InputStream is = getResources().openRawResource(cascadeFileId);
-            FileOutputStream os = new FileOutputStream(cascadeFile);
 
-            byte[] buffer = new byte[4096];
-            int bytesRead;
-            while ((bytesRead = is.read(buffer)) != -1) {
-                os.write(buffer, 0, bytesRead);
-            }
-            is.close();
-            os.close();
-            
-            return true;
-        } catch (IOException e) {
-        	return false;
-        }
+		if(cascadeFile.exists()) return true;
+
+		try {
+			// load cascade file from application resources
+			InputStream is = getResources().openRawResource(cascadeFileId);
+			FileOutputStream os = new FileOutputStream(cascadeFile);
+
+			byte[] buffer = new byte[4096];
+			int bytesRead;
+			while ((bytesRead = is.read(buffer)) != -1) {
+				os.write(buffer, 0, bytesRead);
+			}
+			is.close();
+			os.close();
+
+			return true;
+		} catch (IOException e) {
+			return false;
+		}
 	}
-	
+
 	private BaseLoaderCallback  mLoaderCallback = new BaseLoaderCallback(this) {
 		@Override
 		public void onManagerConnected(int status) {
 			switch (status) {
-				case LoaderCallbackInterface.SUCCESS:
-				{	
-					if(new File(FdActivity.YML_FACE_MODEL_FILE_PATH).exists())
-						FdActivity.this.cameraState = new FaceRecognitionState(FdActivity.this);
-					else if(loadCascadeFile(R.raw.lbpcascade_frontalface, FdActivity.CASCADE_FRONTAL_FACE_FILE_PATH))
-						FdActivity.this.cameraState = new FaceDetectionState(FdActivity.this);
-					
-					mOpenCvCameraView.enableView();
-				} break;
-				default:
-				{
-					super.onManagerConnected(status);
-				} break;
+			case LoaderCallbackInterface.SUCCESS:
+			{	
+				if(new File(FdActivity.YML_FACE_MODEL_FILE_PATH).exists())
+					FdActivity.this.cameraState = new FaceRecognitionState(FdActivity.this);
+				else if(loadCascadeFile(R.raw.lbpcascade_frontalface, FdActivity.CASCADE_FRONTAL_FACE_FILE_PATH))
+					FdActivity.this.cameraState = new FaceDetectionState(FdActivity.this);
+
+				mOpenCvCameraView.enableView();
+			} break;
+			default:
+			{
+				super.onManagerConnected(status);
+			} break;
 			}
 		}
 	};
@@ -131,20 +127,22 @@ public class FdActivity extends Activity implements CvCameraViewListener2 {
 
 		FdActivity.APP_PATH = getFilesDir().getAbsolutePath();
 		FdActivity.CASCADES_PATH = FdActivity.APP_PATH + "/cascades/";
-		
+
 		FdActivity.IMAGES_TO_ACCEPT_PATH = FdActivity.APP_PATH + "/ImagesToAccept/";
 		FdActivity.YML_FACE_MODEL_PATH = FdActivity.APP_PATH + "/facemodel/";
-		
+		FdActivity.REPOSITORY_PATH = FdActivity.APP_PATH + "/repository/";
+
 		FdActivity.YML_FACE_MODEL_FILE_PATH = FdActivity.APP_PATH + "/facemodel/facemodel.yml";
 		FdActivity.CASCADE_FRONTAL_FACE_FILE_PATH = FdActivity.CASCADES_PATH + "lbpfrontalcascade.xml";
-		
+
 		(new File(FdActivity.CASCADES_PATH)).mkdirs();
 		(new File(FdActivity.YML_FACE_MODEL_PATH)).mkdirs();
 		(new File(FdActivity.IMAGES_TO_ACCEPT_PATH)).mkdirs();
-		
+		(new File(FdActivity.REPOSITORY_PATH)).mkdirs();
+
 		mOpenCvCameraView = (Tutorial3View) findViewById(R.id.tutorial3_activity_java_surface_view);
 		mOpenCvCameraView.setCvCameraViewListener(this);
-		
+
 		toggleButtonTrain=(Button)findViewById(R.id.takePhotoButton);
 		imCamera=(ImageButton)findViewById(R.id.imageButton1);
 
@@ -156,7 +154,7 @@ public class FdActivity extends Activity implements CvCameraViewListener2 {
 
 		ImageButton openPhotosConfirmationMenu = (ImageButton) findViewById(R.id.imageButtonAccept);
 		openPhotosConfirmationMenu.setOnClickListener(new View.OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v) {
 				Intent intent = new Intent(getApplicationContext(), ImageGallery.class);
@@ -164,7 +162,7 @@ public class FdActivity extends Activity implements CvCameraViewListener2 {
 				startActivity(intent);
 			}
 		});
-		
+
 		imCamera.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				if (mChooseCamera==frontCam) {
@@ -238,11 +236,11 @@ public class FdActivity extends Activity implements CvCameraViewListener2 {
 
 		return true;
 	}
-	
+
 	public void setCameraState(CameraState newCameraState) {
 		this.cameraState = newCameraState;
 	}
-	
+
 	public CameraState getCameraState() {
 		return cameraState;
 	}
