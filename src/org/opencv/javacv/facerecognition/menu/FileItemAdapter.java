@@ -22,13 +22,15 @@ public class FileItemAdapter extends BaseAdapter {
         this.files = this.parent.listFiles();
     }
 	
-	public void goBack() {
-		if(this.parent.equals(this.root)) return;
+	public boolean goBack() {
+		if(this.parent.equals(this.root)) return false;
 		
 		this.parent = this.parent.getParentFile();
 		this.files = this.parent.listFiles();
 		
 		this.notifyDataSetChanged();
+		
+		return true;
 	}
 	
 	public void goTo(int position) {
@@ -44,7 +46,7 @@ public class FileItemAdapter extends BaseAdapter {
 	
 	@Override
 	public int getCount() {
-		return this.files.length;
+		return this.files.length + 1;
 	}
 
 	@Override
@@ -72,8 +74,13 @@ public class FileItemAdapter extends BaseAdapter {
         ImageView imgViewChecked = (ImageView) itemView.findViewById(R.id.file_icon);
 
         if(position == 0) {
-        	txtName.setText("..");
-        	imgViewChecked.setImageResource(R.drawable.basic_undo_icon);
+        	if(this.parent.equals(this.root)) {
+        		txtName.setText("");
+            	imgViewChecked.setImageResource(R.drawable.empty);
+        	} else {
+        		txtName.setText("..");
+            	imgViewChecked.setImageResource(R.drawable.basic_undo_icon);
+        	}
         } else {
         	final File item = this.files[position-1];
         	txtName.setText(item.getName());        
