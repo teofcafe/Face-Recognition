@@ -30,7 +30,6 @@ public class Repositorio extends Fragment {
     	new File(FdActivity.REPOSITORY_PATH + "fl1/fl2").mkdir();
     	new File(FdActivity.REPOSITORY_PATH + "fl2").mkdir();
     	new File(FdActivity.REPOSITORY_PATH + "fl2").mkdir();
-    	new File(FdActivity.REPOSITORY_PATH + "retroceder").mkdir();
     	
     	 View rootView = inflater.inflate(R.layout.repositorio, container, false);
     	
@@ -40,9 +39,8 @@ public class Repositorio extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState){
     	super.onActivityCreated(savedInstanceState);
-    	File[] items = (new File(FdActivity.REPOSITORY_PATH).listFiles());
     	
-    	fileItemAdapter = new FileItemAdapter(items);
+    	fileItemAdapter = new FileItemAdapter(new File(FdActivity.REPOSITORY_PATH));
     	listView = (ListView) getActivity().findViewById(R.id.listView1);
     	listView.setAdapter(fileItemAdapter);
     	listView.setOnItemClickListener(new OnItemClickListener() {
@@ -50,20 +48,25 @@ public class Repositorio extends Fragment {
 			@Override
 			public void onItemClick(AdapterView<?> adapter, View v, int pos,
 					long id) {
-				File item = (File) listView.getItemAtPosition(pos);
-				if(item.isDirectory()){
-					fileItemAdapter.setItems(item.listFiles());
+				
+				if(pos == 0) {
+					fileItemAdapter.setParent(fileItemAdapter.getParent().getParentFile());
 					fileItemAdapter.notifyDataSetChanged();
-				}else{
-					Uri webPage = Uri.parse("http://www.android.com");
-					Intent webIntent = new Intent(Intent.ACTION_VIEW, webPage);
-					PackageManager pmanager = getActivity().getPackageManager();
-					List<ResolveInfo> activities = pmanager.queryIntentActivities(webIntent, 0);
-					if(activities.size() > 0)
-						startActivity(webIntent);
-					
+				} else {
+					File item = (File) listView.getItemAtPosition(pos);
+					if(item.isDirectory()){
+						fileItemAdapter.setParent((File) fileItemAdapter.getItem(pos));
+						fileItemAdapter.notifyDataSetChanged();
+					}else{
+						Uri webPage = Uri.parse("http://www.android.com");
+						Intent webIntent = new Intent(Intent.ACTION_VIEW, webPage);
+						PackageManager pmanager = getActivity().getPackageManager();
+						List<ResolveInfo> activities = pmanager.queryIntentActivities(webIntent, 0);
+						if(activities.size() > 0)
+							startActivity(webIntent);
+						
+					}
 				}
-		
 			}
 		});
     	

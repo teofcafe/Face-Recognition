@@ -102,6 +102,8 @@ public class ImageGallery extends Activity implements AdapterView.OnItemSelected
 		            images.put(counter, grayImg);
 
 		            labels[counter++] = 0;
+		            
+		            image.delete();
 		        }
 				
 				FaceRecognizer faceRecognizer = com.googlecode.javacv.cpp.opencv_contrib.createLBPHFaceRecognizer();

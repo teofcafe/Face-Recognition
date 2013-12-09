@@ -12,24 +12,37 @@ import android.widget.TextView;
 
 public class FileItemAdapter extends BaseAdapter {
 	
-	private File[] items = null;
+	private File root = null;
+	private File parent = null;
+	private File[] files = null;
 
-	public FileItemAdapter(final File[] items) {
-        this.items = items;
+	public FileItemAdapter(final File root) {
+		this.root = root;
+		this.parent = this.root;
+        this.files = this.parent.listFiles();
     }
 	
 	public void setItems(File[] items) {
-		this.items=items;
+		this.files = items;
 	}
 
+	public void setParent(File parent) {
+		this.parent = parent;
+		this.files = this.parent.listFiles();
+	}
+	
+	public File getParent() {
+		return this.parent;
+	}
+	
 	@Override
 	public int getCount() {
-		return this.items.length;
+		return this.files.length;
 	}
 
 	@Override
 	public Object getItem(int position) {
-		 return this.items[position];
+		 return this.files[position-1];
 	}
 
 	@Override
@@ -39,26 +52,30 @@ public class FileItemAdapter extends BaseAdapter {
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		final File item = this.items[position];
         View itemView = null;
 
         if (convertView == null) {
-            LayoutInflater inflater = (LayoutInflater) parent.getContext()
-                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            LayoutInflater inflater = (LayoutInflater) parent.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             itemView = inflater.inflate(R.layout.item_list, null);
         } else {
             itemView = convertView;
         }
 
-        // Set the text of the item
         TextView txtName = (TextView) itemView.findViewById(R.id.name);
-        txtName.setText(item.getName());
-        
+        ImageView imgViewChecked = (ImageView) itemView.findViewById(R.id.file_icon);
 
-        // Set the check-icon
-        ImageView imgViewChecked = (ImageView) itemView
-                .findViewById(R.id.file_icon);
-        imgViewChecked.setImageResource(R.drawable.lightbulb);
+        if(position == 0) {
+        	txtName.setText("..");
+        	imgViewChecked.setImageResource(R.drawable.basic_undo_icon);
+        } else {
+        	final File item = this.files[position-1];
+        	txtName.setText(item.getName());        
+            
+            if(item.isDirectory())
+            	imgViewChecked.setImageResource(R.drawable.folder_icon);
+            else
+            	imgViewChecked.setImageResource(R.drawable.document_icon);
+        }
 
         return itemView;
 	}

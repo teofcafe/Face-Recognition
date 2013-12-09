@@ -59,8 +59,6 @@ public class FaceRecognitionState extends CameraState {
 			super.cameraActivity.getApplicationContext().startActivity(intent);
 		}
 		
-		//super.cameraActivity.setCameraState(this/*Detecta Olhos*/);
-		
 		//Desenha o rectangulo a volta da face
 		if(facesArray.length > 0)
 			Core.rectangle(image, facesArray[0].tl(), facesArray[0].br(), FACE_RECT_COLOR, 3);
