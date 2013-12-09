@@ -50,13 +50,11 @@ public class Repositorio extends Fragment {
 					long id) {
 				
 				if(pos == 0) {
-					fileItemAdapter.setParent(fileItemAdapter.getParent().getParentFile());
-					fileItemAdapter.notifyDataSetChanged();
+					fileItemAdapter.goBack();
 				} else {
 					File item = (File) listView.getItemAtPosition(pos);
 					if(item.isDirectory()){
-						fileItemAdapter.setParent((File) fileItemAdapter.getItem(pos));
-						fileItemAdapter.notifyDataSetChanged();
+						fileItemAdapter.goTo(pos);
 					}else{
 						Uri webPage = Uri.parse("http://www.android.com");
 						Intent webIntent = new Intent(Intent.ACTION_VIEW, webPage);

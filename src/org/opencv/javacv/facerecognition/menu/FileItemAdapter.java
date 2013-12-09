@@ -22,13 +22,20 @@ public class FileItemAdapter extends BaseAdapter {
         this.files = this.parent.listFiles();
     }
 	
-	public void setItems(File[] items) {
-		this.files = items;
-	}
-
-	public void setParent(File parent) {
-		this.parent = parent;
+	public void goBack() {
+		if(this.parent.equals(this.root)) return;
+		
+		this.parent = this.parent.getParentFile();
 		this.files = this.parent.listFiles();
+		
+		this.notifyDataSetChanged();
+	}
+	
+	public void goTo(int position) {
+		this.parent = this.files[position - 1];
+		this.files = this.parent.listFiles();
+		
+		this.notifyDataSetChanged();
 	}
 	
 	public File getParent() {
