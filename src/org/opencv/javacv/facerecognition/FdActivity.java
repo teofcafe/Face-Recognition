@@ -16,6 +16,7 @@ import org.opencv.javacv.facerecognition.camerastate.CameraState;
 import org.opencv.javacv.facerecognition.camerastate.FaceDetectionState;
 import org.opencv.javacv.facerecognition.camerastate.FaceRecognitionState;
 import org.opencv.javacv.facerecognition.camerastate.SaveOneFrameState;
+import org.opencv.javacv.facerecognition.menu.InsertPassword;
 
 import org.opencv.android.CameraBridgeViewBase.CvCameraViewListener2;
 
@@ -33,7 +34,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.ImageButton;
 
 public class FdActivity extends Activity implements CvCameraViewListener2 {
@@ -66,7 +66,9 @@ public class FdActivity extends Activity implements CvCameraViewListener2 {
 	private int mChooseCamera = backCam;
 	private int counter = 0;
 
-	Button toggleButtonTrain;
+	public static boolean firstTime = true;
+
+	ImageButton toggleButtonTrain;
 	ImageButton imCamera;
 
 	com.googlecode.javacv.cpp.opencv_contrib.FaceRecognizer faceRecognizer;
@@ -143,7 +145,7 @@ public class FdActivity extends Activity implements CvCameraViewListener2 {
 		mOpenCvCameraView = (Tutorial3View) findViewById(R.id.tutorial3_activity_java_surface_view);
 		mOpenCvCameraView.setCvCameraViewListener(this);
 
-		toggleButtonTrain=(Button)findViewById(R.id.takePhotoButton);
+		toggleButtonTrain=(ImageButton)findViewById(R.id.takePhotoButton);
 		imCamera=(ImageButton)findViewById(R.id.imageButton1);
 
 		toggleButtonTrain.setOnClickListener(new View.OnClickListener() {
@@ -152,9 +154,9 @@ public class FdActivity extends Activity implements CvCameraViewListener2 {
 			}
 		});
 
-		ImageButton openPhotosConfirmationMenu = (ImageButton) findViewById(R.id.imageButtonAccept);
-		openPhotosConfirmationMenu.setOnClickListener(new View.OnClickListener() {
 
+		ImageButton acceptFaces = (ImageButton) findViewById(R.id.acceptFaces);
+		acceptFaces .setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				Intent intent = new Intent(getApplicationContext(), ImageGallery.class);
@@ -162,6 +164,28 @@ public class FdActivity extends Activity implements CvCameraViewListener2 {
 				startActivity(intent);
 			}
 		});
+
+		ImageButton insertPasswordMenu = (ImageButton) findViewById(R.id.insertPassword);
+		insertPasswordMenu.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(getApplicationContext(), InsertPassword.class);
+				startActivity(intent);
+			}
+		});
+
+		firstTime = !new File(FdActivity.YML_FACE_MODEL_FILE_PATH).exists();
+
+		if(firstTime) {
+			ImageButton b = (ImageButton) findViewById(R.id.acceptFaces);
+			b.setVisibility(View.VISIBLE);
+		} else {
+			ImageButton b1 = (ImageButton) findViewById(R.id.acceptFaces);
+			b1.setVisibility(View.GONE);
+			ImageButton b2 = (ImageButton) findViewById(R.id.takePhotoButton);
+			b2.setVisibility(View.GONE);
+		}
 
 		imCamera.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
@@ -215,7 +239,7 @@ public class FdActivity extends Activity implements CvCameraViewListener2 {
 		if (mOpenCvCameraView.numberCameras()>1) {
 			nBackCam = menu.add(getResources().getString(R.string.SFrontCamera));
 			mFrontCam = menu.add(getResources().getString(R.string.SBackCamera));
-		} else imCamera.setVisibility(View.INVISIBLE);
+		} else imCamera.setVisibility(View.GONE);
 		return true;
 	}
 

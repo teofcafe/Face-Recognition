@@ -8,36 +8,43 @@
     <org.opencv.javacv.facerecognition.Tutorial3View
         android:id="@+id/tutorial3_activity_java_surface_view"
         android:layout_width="match_parent"
-        android:layout_weight="0.12"
-        android:layout_height="match_parent" />
-        
+        android:layout_height="match_parent"
+        android:layout_weight="0.12" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="0.92"
         android:baselineAligned="false"
         android:orientation="vertical" >
-    	
-		<Button
-		    android:id="@+id/takePhotoButton"
-		    android:layout_width="match_parent"
-		    android:layout_height="match_parent"
-		    android:layout_weight="0.92"
-		    android:text="Save Face" />
-	
-	    <ImageButton
-	        android:id="@+id/imageButton1"
-	        android:layout_width="match_parent"
-	        android:layout_height="match_parent"
-	        android:layout_weight="0.92"
-	        android:src="@drawable/ic_stat_camera" />
-	    
-	    <ImageButton
-	        android:id="@+id/imageButtonAccept"
-	        android:layout_width="match_parent"
-	        android:layout_height="match_parent"
-	        android:layout_weight="0.92"
-	        android:src="@drawable/lightbulb"
-	        />
-	</LinearLayout>    
+
+        <ImageButton
+            android:id="@+id/takePhotoButton"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="0.92"
+            android:src="@drawable/camera" />
+
+        <ImageButton
+            android:id="@+id/acceptFaces"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="0.92"
+            android:src="@drawable/face" />
+
+        <ImageButton
+            android:id="@+id/insertPassword"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="0.92"
+            android:src="@drawable/key" />
+
+        <ImageButton
+            android:id="@+id/imageButton1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="0.92"
+            android:src="@drawable/ic_stat_camera" />
+    </LinearLayout>
+
 </LinearLayout>

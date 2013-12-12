@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:text="Inserir Password" />
+        android:text="Insert old password" />
 
     <EditText
         android:id="@+id/editText1"
@@ -30,7 +30,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/editText1"
         android:layout_centerHorizontal="true"
-        android:text="Inserir Nova Password" />
+        android:text="Insert new password" />
 
     <EditText
         android:id="@+id/editText2"
@@ -50,7 +50,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/editText2"
         android:layout_centerHorizontal="true"
-        android:text="Confirmar Nova Pasword" />
+        android:text="Confirm new password" />
 
     <EditText
         android:id="@+id/editText3"
@@ -68,6 +68,6 @@
         android:layout_below="@+id/editText3"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="14dp"
-        android:text="Salvar Alterações" />
+        android:text="Save changes" />
 
 </RelativeLayout>
