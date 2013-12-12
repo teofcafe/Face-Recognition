@@ -17,6 +17,7 @@ public class AESCipher implements CipherInterface{
 	private final IvParameterSpec IV = new IvParameterSpec(new byte[8]);
 	private SecretKeySpec _chave;
 	private Cipher _cipher;
+	private Cipher _decipher;
 
 	public AESCipher(byte[] chave) {
 		
@@ -25,24 +26,25 @@ public class AESCipher implements CipherInterface{
 		try {
 			
 			_cipher = Cipher.getInstance("AES/CBC/NoPadding", "SunJCE");
+			_cipher.init(Cipher.DECRYPT_MODE, _chave, IV);
+			_decipher = Cipher.getInstance("AES/CBC/NoPadding", "SunJCE");
+			_decipher.init(Cipher.DECRYPT_MODE, _chave, IV);
 			
 		} catch (NoSuchAlgorithmException e) {
 		} catch (NoSuchProviderException e) {
 		} catch (NoSuchPaddingException e) {
+		} catch (InvalidKeyException e) {
+			e.printStackTrace();
+		} catch (InvalidAlgorithmParameterException e) {
+			e.printStackTrace();
 		}
+		
+		
 	}
 
 	@Override
 	public byte[] cipher(byte[] conteudo) {
 		
-		try {
-			
-			_cipher.init(Cipher.ENCRYPT_MODE, _chave, IV);
-			
-		} catch (InvalidKeyException e) {
-		} catch (InvalidAlgorithmParameterException e) {
-		}
-
 	    try {
 	    	
 			return _cipher.doFinal(conteudo);
@@ -57,14 +59,6 @@ public class AESCipher implements CipherInterface{
 	@Override
 	public byte[] decipher(byte[] conteudoCifrado) {
 
-		try {
-			
-			_cipher.init(Cipher.DECRYPT_MODE, _chave, IV);
-			
-		} catch (InvalidKeyException e) {
-		} catch (InvalidAlgorithmParameterException e) {
-		}
-		
 	    try {
 	    	
 			return _cipher.doFinal(conteudoCifrado);

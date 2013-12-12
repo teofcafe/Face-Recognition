@@ -4,35 +4,33 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-   <GridView
-	   android:id="@+id/gridview"
-	   android:layout_width="fill_parent" 
-	   android:layout_height="fill_parent"
-	   android:columnWidth="90dp"
-	   android:numColumns="auto_fit"
-	   android:gravity="center"
-	   android:layout_weight="0.10"
-	/>
+    <GridView
+        android:id="@+id/gridview"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_weight="0.10"
+        android:columnWidth="90dp"
+        android:gravity="center"
+        android:numColumns="auto_fit" />
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal" >
 
-        <Button
+        <ImageButton
             android:id="@+id/buttonDel"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="0.92"
-            android:text="@string/SDelete" />
+            android:src="@drawable/trash" />
 
         <ImageButton
-            android:id="@+id/imageButton2"
+            android:id="@+id/accept"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="0.92"
-            android:src="@drawable/lightbulb" />
-
+            android:src="@drawable/accept" />
     </LinearLayout>
 
 </LinearLayout>

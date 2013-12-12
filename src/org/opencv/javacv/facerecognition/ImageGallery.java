@@ -19,7 +19,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.Toast;
@@ -55,7 +54,7 @@ public class ImageGallery extends Activity implements AdapterView.OnItemSelected
 			}
 		});
 
-		final Button delbutton = (Button) findViewById(R.id.buttonDel);
+		final ImageButton delbutton = (ImageButton) findViewById(R.id.buttonDel);
 		delbutton.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 
@@ -78,7 +77,7 @@ public class ImageGallery extends Activity implements AdapterView.OnItemSelected
 			}
 		});
 
-		ImageButton acceptAllButton = (ImageButton) findViewById(R.id.imageButton2);
+		ImageButton acceptAllButton = (ImageButton) findViewById(R.id.accept);
 		acceptAllButton.setOnClickListener(new OnClickListener() {
 
 			@Override

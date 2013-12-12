@@ -15,6 +15,7 @@ public class TripleDESCipher implements CipherInterface{
 	private final IvParameterSpec IV = new IvParameterSpec(new byte[8]);
 	private SecretKeySpec _chave;
 	private Cipher _cipher;
+	private Cipher _decipher;
 
 	public TripleDESCipher(byte[] chave) {
 		
@@ -23,23 +24,22 @@ public class TripleDESCipher implements CipherInterface{
 		try {
 			
 			_cipher = Cipher.getInstance("DESede/CBC/PKCS5Padding");
+			_cipher.init(Cipher.DECRYPT_MODE, _chave, IV);
+			_decipher = Cipher.getInstance("DESede/CBC/PKCS5Padding");
+			_decipher.init(Cipher.DECRYPT_MODE, _chave, IV);
 			
 		} catch (NoSuchAlgorithmException e) {
 		} catch (NoSuchPaddingException e) {
+		} catch (InvalidKeyException e) {
+			e.printStackTrace();
+		} catch (InvalidAlgorithmParameterException e) {
+			e.printStackTrace();
 		}
 
 	}
 
 	@Override
 	public byte[] cipher(byte[] conteudo) {
-		
-		try {
-			
-			_cipher.init(Cipher.ENCRYPT_MODE, _chave, IV);
-			
-		} catch (InvalidKeyException e) {
-		} catch (InvalidAlgorithmParameterException e) {
-		}
 
     	try {
     		
@@ -55,13 +55,6 @@ public class TripleDESCipher implements CipherInterface{
 	@Override
 	public byte[] decipher(byte[] conteudoCifrado) {
 		
-		try {
-			
-			_cipher.init(Cipher.DECRYPT_MODE, _chave, IV);
-			
-		} catch (InvalidKeyException e) {
-		} catch (InvalidAlgorithmParameterException e) {
-		}
 
     	try {
     		

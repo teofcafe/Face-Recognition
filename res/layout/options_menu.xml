@@ -48,7 +48,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="left"
-            android:text="Velocidade" />
+            android:text="Velocity" />
 
         <CheckedTextView
             android:id="@+id/checkedTextView3"
@@ -58,7 +58,7 @@
             android:layout_gravity="right|top"
             android:layout_marginLeft="183dp"
             android:layout_row="1"
-            android:text="Segurança" />
+            android:text="Security" />
 
     </GridLayout>
 
@@ -69,7 +69,7 @@
         android:layout_gravity="center"
         android:layout_marginTop="0dp"
         android:gravity="center"
-        android:text="@string/avan_adas"
+        android:text="Advanced"
         android:textSize="25sp"
         android:textStyle="bold" />
 
@@ -85,6 +85,6 @@
          android:layout_gravity="center"
         android:layout_marginTop="5dp"
         android:gravity="center"
-        android:text="Alterar Password" />
+        android:text="Change password" />
 
 </LinearLayout>
