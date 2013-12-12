@@ -16,4 +16,8 @@
     <string name="SSearching">Searching</string>
     <string name="SFrontCamera">Front Camera</string>
     <string name="SBackCamera">Back Camera</string>
+    <string name="seguranca">seguranca</string>
+    <string name="standard">Standard</string>
+    <string name="avan_adas">Avançadas</string>
+    <string name="Segurança">Seguranca</string>
 </resources>

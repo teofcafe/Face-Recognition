@@ -9,7 +9,6 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:gravity="center"
-        android:text="Mais cenas"
         android:textSize="100dp"
         android:textStyle="bold" />
 
