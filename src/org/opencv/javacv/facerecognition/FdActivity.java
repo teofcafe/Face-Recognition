@@ -171,14 +171,22 @@ public class FdActivity extends Activity implements CvCameraViewListener2 {
 
 		firstTime = !new File(FdActivity.YML_FACE_MODEL_FILE_PATH).exists();
 
+		
+		
 		if(firstTime || updateFace) {
-			ImageButton b = (ImageButton) findViewById(R.id.acceptFaces);
-			b.setVisibility(View.VISIBLE);
+			ImageButton b1 = (ImageButton) findViewById(R.id.acceptFaces);
+			b1.setVisibility(View.VISIBLE);
+			ImageButton b2 = (ImageButton) findViewById(R.id.takePhotoButton);
+			b2.setVisibility(View.VISIBLE);
+			ImageButton b3 = (ImageButton) findViewById(R.id.insertPassword);
+			b3.setVisibility(View.GONE);
 		} else {
 			ImageButton b1 = (ImageButton) findViewById(R.id.acceptFaces);
 			b1.setVisibility(View.GONE);
 			ImageButton b2 = (ImageButton) findViewById(R.id.takePhotoButton);
 			b2.setVisibility(View.GONE);
+			ImageButton b3 = (ImageButton) findViewById(R.id.insertPassword);
+			b3.setVisibility(View.VISIBLE);
 		}
 
 		imCamera.setOnClickListener(new View.OnClickListener() {
