@@ -49,7 +49,7 @@ public class Repositorio extends Fragment {
 			public void onItemClick(AdapterView<?> adapter, View v, int pos,
 					long id) {
 				
-				if(pos == 0) {
+				if(pos == 0 && !fileItemAdapter.isOnRoot()) {
 					fileItemAdapter.goBack();
 				} else {
 					File item = (File) listView.getItemAtPosition(pos);

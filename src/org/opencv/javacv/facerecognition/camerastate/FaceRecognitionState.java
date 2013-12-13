@@ -49,15 +49,15 @@ public class FaceRecognitionState extends CameraState {
 		double[] confidence = new double[1];
 		faceRecognizer.predict(iplIsolatedFace, label, confidence);
 		
-		if(confidence[0] > 70)
+		/*if(confidence[0] > 70)
 			FACE_RECT_COLOR = COR_VERDE;
 		else {
 			FACE_RECT_COLOR = COR_ROSA;
-			
+			*/
 			Intent intent = new Intent(super.cameraActivity.getApplicationContext(), MenuInicial.class);
 			intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 			super.cameraActivity.getApplicationContext().startActivity(intent);
-		}
+		//}
 		
 		//Desenha o rectangulo a volta da face
 		if(facesArray.length > 0)

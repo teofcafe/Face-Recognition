@@ -13,7 +13,9 @@ public class BlowFishCipher implements CipherInterface{
 	
 	private SecretKeySpec _chave;
 	private Cipher _cipher;
-
+	private Cipher _decipher;
+	
+	
 	public BlowFishCipher(byte[] chave) {
 		
 		_chave = new SecretKeySpec(chave, "Blowfish");
@@ -21,21 +23,20 @@ public class BlowFishCipher implements CipherInterface{
 		try {
 			
 			_cipher = Cipher.getInstance("Blowfish");
+			_cipher.init(Cipher.DECRYPT_MODE, _chave);
+			_decipher = Cipher.getInstance("Blowfish");
+			_decipher.init(Cipher.DECRYPT_MODE, _chave);
 			
 		} catch (NoSuchAlgorithmException e) {
 		} catch (NoSuchPaddingException e) {
+		} catch (InvalidKeyException e) {
+			e.printStackTrace();
 		}
 	}
 
 	@Override
 	public byte[] cipher(byte[] conteudo) {
-		
-		try {
-			
-			_cipher.init(Cipher.ENCRYPT_MODE, _chave);
-			
-		} catch (InvalidKeyException e) {
-		}
+
 	    
 		try {
 			
@@ -51,13 +52,6 @@ public class BlowFishCipher implements CipherInterface{
 	@Override
 	public byte[] decipher(byte[] conteudoCifrado) {
 		 
-		try {
-			
-			_cipher.init(Cipher.DECRYPT_MODE, _chave);
-			
-		} catch (InvalidKeyException e) {
-		}
-	   
 		try {
 			
 			return _cipher.doFinal(conteudoCifrado);
