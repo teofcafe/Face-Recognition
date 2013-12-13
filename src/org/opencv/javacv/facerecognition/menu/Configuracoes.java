@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.RadioButton;
@@ -21,6 +22,9 @@ import android.widget.Spinner;
 public class Configuracoes extends Fragment {
 
 	private Spinner spn1 = null;
+	private RadioButton securityRadioButton = null;
+	private RadioButton intermidiateRadioButton = null;
+	private RadioButton speedRadioButton = null;
 	private List<String> nomes = new ArrayList<String>();
 	private ArrayAdapter<String> arrayAdapter = null;
 
@@ -47,7 +51,41 @@ public class Configuracoes extends Fragment {
 		arrayAdapter = new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_spinner_dropdown_item, nomes);
 		ArrayAdapter<String> spinnerArrayAdapter = arrayAdapter;
 		spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
+		securityRadioButton = (RadioButton) getActivity().findViewById(R.id.seguranca);
+		intermidiateRadioButton = (RadioButton) getActivity().findViewById(R.id.intermedio);
+		speedRadioButton = (RadioButton) getActivity().findViewById(R.id.velocidade);
 		spn1.setAdapter(spinnerArrayAdapter);
+		speedRadioButton.setChecked(true);
+		
+		spn1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+		    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+		    	if(spn1.getSelectedItem().toString().equals("AES")){
+		    		intermidiateRadioButton.setChecked(false);
+		    		securityRadioButton.setChecked(false);
+		    		speedRadioButton.setChecked(true);
+		    	}
+		    	else if(spn1.getSelectedItem().toString().equals("AES + Blowfish")){
+		    		securityRadioButton.setChecked(false);
+					speedRadioButton.setChecked(false);
+					intermidiateRadioButton.setChecked(true);
+		    	}
+		    	else if(spn1.getSelectedItem().toString().equals("AES + Blowfish + 3XDES")){
+		    		intermidiateRadioButton.setChecked(false);
+					speedRadioButton.setChecked(false);
+					securityRadioButton.setChecked(true);
+		    	}
+		    	else {
+		    		intermidiateRadioButton.setChecked(true);
+					speedRadioButton.setChecked(false);
+					securityRadioButton.setChecked(false);
+		    	}
+		        
+		    } 
+
+		    public void onNothingSelected(AdapterView<?> adapterView) {
+		        return;
+		    } 
+		});
 
 		Button changePasswordButton = (Button) getActivity().findViewById(R.id.button1);
 		changePasswordButton.setOnClickListener(new OnClickListener() {
@@ -80,9 +118,9 @@ public class Configuracoes extends Fragment {
 			}
 		});
 		
-		final RadioButton securityRadioButton = (RadioButton) getActivity().findViewById(R.id.seguranca);
-		final RadioButton intermidiateRadioButton = (RadioButton) getActivity().findViewById(R.id.intermedio);
-		final RadioButton speedRadioButton = (RadioButton) getActivity().findViewById(R.id.velocidade);
+		securityRadioButton = (RadioButton) getActivity().findViewById(R.id.seguranca);
+		intermidiateRadioButton = (RadioButton) getActivity().findViewById(R.id.intermedio);
+		speedRadioButton = (RadioButton) getActivity().findViewById(R.id.velocidade);
 
 		securityRadioButton.setOnClickListener(new OnClickListener() {
 
