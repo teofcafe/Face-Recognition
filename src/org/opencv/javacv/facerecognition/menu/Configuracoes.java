@@ -48,7 +48,6 @@ public class Configuracoes extends Fragment {
 		spn1.setAdapter(spinnerArrayAdapter);
 
 		Button changePasswordButton = (Button) getActivity().findViewById(R.id.button1);
-
 		changePasswordButton.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -58,6 +57,16 @@ public class Configuracoes extends Fragment {
 			}
 		});
 
+		Button changePinButton = (Button) getActivity().findViewById(R.id.button2);
+		changePinButton.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(getActivity(), ChangePinMenu.class);
+				startActivity(intent);
+			}
+		});
+		
 		final RadioButton securityRadioButton = (RadioButton) getActivity().findViewById(R.id.seguranca);
 		final RadioButton intermidiateRadioButton = (RadioButton) getActivity().findViewById(R.id.intermedio);
 		final RadioButton speedRadioButton = (RadioButton) getActivity().findViewById(R.id.velocidade);

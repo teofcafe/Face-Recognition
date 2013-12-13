@@ -14,15 +14,13 @@ ActionBar.TabListener {
 	private ViewPager viewPager = null;
 	private Tabs mAdapter = null;
 	private ActionBar actionBar = null;
-	// Tab titles
-	private String[] tabs = { "Repositório", "Configurações"};
+	private String[] tabs = { "Repository", "Configurations"};
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.menu_inicial);
 		
-		// Initilization
 		viewPager = (ViewPager) findViewById(R.id.menu_inicial);
 		actionBar = getActionBar();
 		if(actionBar == null) return;
@@ -45,8 +43,6 @@ ActionBar.TabListener {
 
 			@Override
 			public void onPageSelected(int position) {
-				// on changing the page
-				// make respected tab selected
 				actionBar.setSelectedNavigationItem(position);
 			}
 
@@ -66,8 +62,6 @@ ActionBar.TabListener {
 
 	@Override
 	public void onTabSelected(Tab tab, FragmentTransaction ft) {
-		// on tab selected
-		// show respected fragment view
 		viewPager.setCurrentItem(tab.getPosition());
 	}
 

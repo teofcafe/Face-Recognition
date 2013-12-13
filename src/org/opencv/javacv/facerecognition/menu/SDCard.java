@@ -17,7 +17,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
-public class Repositorio extends Fragment {
+public class SDCard extends Fragment {
 
 	private ListView listView;
 	private FileItemAdapter fileItemAdapter;
@@ -25,11 +25,6 @@ public class Repositorio extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-
-		new File(FdActivity.REPOSITORY_PATH + "fl1").mkdir();
-		new File(FdActivity.REPOSITORY_PATH + "fl1/fl2").mkdir();
-		new File(FdActivity.REPOSITORY_PATH + "fl2").mkdir();
-		new File(FdActivity.REPOSITORY_PATH + "fl2").mkdir();
 
 		View rootView = inflater.inflate(R.layout.repositorio, container, false);
 
@@ -40,9 +35,10 @@ public class Repositorio extends Fragment {
 	public void onActivityCreated(Bundle savedInstanceState){
 		super.onActivityCreated(savedInstanceState);
 
-		fileItemAdapter = new FileItemAdapter(new File(FdActivity.REPOSITORY_PATH));
+		fileItemAdapter = new FileItemAdapter(new File(FdActivity.SDCARD_PATH));
 		listView = (ListView) getActivity().findViewById(R.id.listView1);
 		listView.setAdapter(fileItemAdapter);
+
 		listView.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override

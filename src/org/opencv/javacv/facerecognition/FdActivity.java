@@ -4,10 +4,8 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-
 import org.opencv.android.BaseLoaderCallback;
 import org.opencv.android.CameraBridgeViewBase.CvCameraViewFrame;
-
 import org.opencv.android.LoaderCallbackInterface;
 import org.opencv.android.OpenCVLoader;
 import org.opencv.core.Mat;
@@ -17,17 +15,12 @@ import org.opencv.javacv.facerecognition.camerastate.FaceDetectionState;
 import org.opencv.javacv.facerecognition.camerastate.FaceRecognitionState;
 import org.opencv.javacv.facerecognition.camerastate.SaveOneFrameState;
 import org.opencv.javacv.facerecognition.menu.InsertPassword;
-
 import org.opencv.android.CameraBridgeViewBase.CvCameraViewListener2;
-
 import org.opencv.objdetect.CascadeClassifier;
-
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Intent;
-
 import android.os.Bundle;
-
 import android.os.Build;
 import android.util.Log;
 import android.view.Menu;
@@ -49,12 +42,11 @@ public class FdActivity extends Activity implements CvCameraViewListener2 {
 	public static String CASCADES_PATH = null;
 	public static String YML_FACE_MODEL_PATH = null;
 	public static String REPOSITORY_PATH = null;
+	public static String SDCARD_PATH = null;
 
 	public static String IMAGES_TO_ACCEPT_PATH = null;
 	public static String YML_FACE_MODEL_FILE_PATH = null;
 	public static String CASCADE_FRONTAL_FACE_FILE_PATH = null;
-
-
 
 	private MenuItem               nBackCam;
 	private MenuItem               mFrontCam;
@@ -133,6 +125,7 @@ public class FdActivity extends Activity implements CvCameraViewListener2 {
 		FdActivity.IMAGES_TO_ACCEPT_PATH = FdActivity.APP_PATH + "/ImagesToAccept/";
 		FdActivity.YML_FACE_MODEL_PATH = FdActivity.APP_PATH + "/facemodel/";
 		FdActivity.REPOSITORY_PATH = FdActivity.APP_PATH + "/repository/";
+		FdActivity.SDCARD_PATH = "/sdcard/";
 
 		FdActivity.YML_FACE_MODEL_FILE_PATH = FdActivity.APP_PATH + "/facemodel/facemodel.yml";
 		FdActivity.CASCADE_FRONTAL_FACE_FILE_PATH = FdActivity.CASCADES_PATH + "lbpfrontalcascade.xml";

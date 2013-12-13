@@ -12,20 +12,20 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-public class ChangePasswordMenu extends Activity {
-	EditText password = null;
-	EditText newPassword = null;
-	TextView newPasswordConfirmation = null;
+public class ChangePinMenu extends Activity {
+	EditText pin = null;
+	EditText newPin = null;
+	TextView newPinConfirmation = null;
 	Button confirmation = null;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.changepw);	
+		setContentView(R.layout.change_pin);
 		
-		password = (EditText)findViewById(R.id.editText1);
-		newPassword = (EditText)findViewById(R.id.editText2);
-		newPasswordConfirmation = (EditText)findViewById(R.id.editText3);
+		pin = (EditText)findViewById(R.id.editText1);
+		newPin = (EditText)findViewById(R.id.editText2);
+		newPinConfirmation = (EditText)findViewById(R.id.editText3);
 		confirmation = (Button)findViewById(R.id.button1);
 		
 		confirmation.setOnClickListener(new OnClickListener() {
