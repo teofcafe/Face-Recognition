@@ -15,7 +15,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
-import javax.crypto.Cipher;
 
 public class InitialRequest extends Activity{
 	EditText password = (EditText)findViewById(R.id.editText1);

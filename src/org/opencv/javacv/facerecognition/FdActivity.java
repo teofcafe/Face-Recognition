@@ -59,6 +59,7 @@ public class FdActivity extends Activity implements CvCameraViewListener2 {
 	private int counter = 0;
 
 	public static boolean firstTime = true;
+	public static boolean updateFace = false;
 
 	ImageButton toggleButtonTrain;
 	ImageButton imCamera;
@@ -170,7 +171,7 @@ public class FdActivity extends Activity implements CvCameraViewListener2 {
 
 		firstTime = !new File(FdActivity.YML_FACE_MODEL_FILE_PATH).exists();
 
-		if(firstTime) {
+		if(firstTime || updateFace) {
 			ImageButton b = (ImageButton) findViewById(R.id.acceptFaces);
 			b.setVisibility(View.VISIBLE);
 		} else {

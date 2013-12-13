@@ -112,6 +112,15 @@ public class ImageGallery extends Activity implements AdapterView.OnItemSelected
 				}
 
 				FaceRecognizer faceRecognizer = com.googlecode.javacv.cpp.opencv_contrib.createLBPHFaceRecognizer();
+				
+				
+				File imagens = new File(FdActivity.YML_FACE_MODEL_FILE_PATH);
+				if(imagens.exists()) {
+					faceRecognizer.load(FdActivity.YML_FACE_MODEL_FILE_PATH);	
+					faceRecognizer.update(images, labels);	
+					FdActivity.updateFace = false;
+				}
+				else				
 				faceRecognizer.train(images, labels);
 				faceRecognizer.save(FdActivity.YML_FACE_MODEL_FILE_PATH);
 

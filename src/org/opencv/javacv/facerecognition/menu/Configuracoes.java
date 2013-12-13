@@ -3,6 +3,7 @@ package org.opencv.javacv.facerecognition.menu;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.opencv.javacv.facerecognition.FdActivity;
 import org.opencv.javacv.facerecognition.R;
 
 import android.content.Intent;
@@ -21,6 +22,7 @@ public class Configuracoes extends Fragment {
 
 	private Spinner spn1 = null;
 	private List<String> nomes = new ArrayList<String>();
+	private ArrayAdapter<String> arrayAdapter = null;
 
 
 	@Override
@@ -42,7 +44,7 @@ public class Configuracoes extends Fragment {
 		super.onActivityCreated(savedInstanceState);
 
 		spn1 = (Spinner) getActivity().findViewById(R.id.spinner1);
-		ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_spinner_dropdown_item, nomes);
+		arrayAdapter = new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_spinner_dropdown_item, nomes);
 		ArrayAdapter<String> spinnerArrayAdapter = arrayAdapter;
 		spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
 		spn1.setAdapter(spinnerArrayAdapter);
@@ -67,6 +69,17 @@ public class Configuracoes extends Fragment {
 			}
 		});
 		
+		Button updateFace = (Button) getActivity().findViewById(R.id.button3);
+		updateFace.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				FdActivity.updateFace = true;
+				Intent intent = new Intent(getActivity(), FdActivity.class);
+				startActivity(intent);
+			}
+		});
+		
 		final RadioButton securityRadioButton = (RadioButton) getActivity().findViewById(R.id.seguranca);
 		final RadioButton intermidiateRadioButton = (RadioButton) getActivity().findViewById(R.id.intermedio);
 		final RadioButton speedRadioButton = (RadioButton) getActivity().findViewById(R.id.velocidade);
@@ -77,6 +90,13 @@ public class Configuracoes extends Fragment {
 			public void onClick(View v) {
 				intermidiateRadioButton.setChecked(false);
 				speedRadioButton.setChecked(false);
+				if(!nomes.get(0).equals("AES + Blowfish + 3XDES")){
+					int aux= nomes.indexOf("AES + Blowfish + 3XDES");
+					nomes.set(aux, nomes.get(0));
+					nomes.set(0,"AES + Blowfish + 3XDES");
+					arrayAdapter.notifyDataSetChanged();
+				}
+				
 			}
 		});
 
@@ -86,6 +106,12 @@ public class Configuracoes extends Fragment {
 			public void onClick(View v) {
 				securityRadioButton.setChecked(false);
 				speedRadioButton.setChecked(false);
+				if(!nomes.get(0).equals("AES + Blowfish")){
+					int aux= nomes.indexOf("AES + Blowfish");
+					nomes.set(aux, nomes.get(0));
+					nomes.set(0,"AES + Blowfish");
+					arrayAdapter.notifyDataSetChanged();
+				}
 			}
 		});
 
@@ -95,6 +121,13 @@ public class Configuracoes extends Fragment {
 			public void onClick(View v) {
 				securityRadioButton.setChecked(false);
 				intermidiateRadioButton.setChecked(false);
+				if(!nomes.get(0).equals("AES")){
+					int aux= nomes.indexOf("AES");
+					nomes.set(aux, nomes.get(0));
+					nomes.set(0, "AES");
+					arrayAdapter.notifyDataSetChanged();
+				}
+	
 			}
 		});
 	}
