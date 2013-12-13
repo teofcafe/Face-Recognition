@@ -15,6 +15,7 @@ public class FileItemAdapter extends BaseAdapter {
 	private File root = null;
 	private File parent = null;
 	private File[] files = null;
+	private int positionOffset = 0;
 
 	public FileItemAdapter(final File root) {
 		this.root = root;
@@ -23,10 +24,14 @@ public class FileItemAdapter extends BaseAdapter {
     }
 	
 	public boolean goBack() {
-		if(this.parent.equals(this.root)) return false;
+		if(this.isOnRoot())
+			return false;
 		
 		this.parent = this.parent.getParentFile();
 		this.files = this.parent.listFiles();
+		
+		if(this.isOnRoot())
+			this.positionOffset = 0;
 		
 		this.notifyDataSetChanged();
 		
@@ -34,8 +39,9 @@ public class FileItemAdapter extends BaseAdapter {
 	}
 	
 	public void goTo(int position) {
-		this.parent = this.files[position - 1];
+		this.parent = this.files[position - this.positionOffset];
 		this.files = this.parent.listFiles();
+		this.positionOffset = 1;
 		
 		this.notifyDataSetChanged();
 	}
@@ -44,14 +50,18 @@ public class FileItemAdapter extends BaseAdapter {
 		return this.parent;
 	}
 	
+	public boolean isOnRoot() {
+		return this.parent.equals(this.root);
+	}
+	
 	@Override
 	public int getCount() {
-		return this.files.length + 1;
+		return this.files.length + this.positionOffset;
 	}
 
 	@Override
 	public Object getItem(int position) {
-		 return this.files[position-1];
+		 return this.files[position - this.positionOffset];
 	}
 
 	@Override
@@ -73,17 +83,12 @@ public class FileItemAdapter extends BaseAdapter {
         TextView txtName = (TextView) itemView.findViewById(R.id.name);
         ImageView imgViewChecked = (ImageView) itemView.findViewById(R.id.file_icon);
 
-        if(position == 0) {
-        	if(this.parent.equals(this.root)) {
-        		txtName.setText("");
-            	imgViewChecked.setImageResource(R.drawable.empty);
-        	} else {
+        if(!this.isOnRoot() && position == 0) {
         		txtName.setText("..");
             	imgViewChecked.setImageResource(R.drawable.basic_undo_icon);
-        	}
         } else {
-        	final File item = this.files[position-1];
-        	txtName.setText(item.getName());        
+        	final File item = this.files[position - this.positionOffset];
+        	txtName.setText(item.getName());
             
             if(item.isDirectory())
             	imgViewChecked.setImageResource(R.drawable.folder_icon);
