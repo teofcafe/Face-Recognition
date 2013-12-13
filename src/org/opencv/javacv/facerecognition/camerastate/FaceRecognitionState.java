@@ -9,6 +9,7 @@ import org.opencv.core.Mat;
 import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
 import org.opencv.javacv.facerecognition.FdActivity;
+import org.opencv.javacv.facerecognition.menu.InsertPin;
 import org.opencv.javacv.facerecognition.menu.MenuInicial;
 import org.opencv.javacv.facerecognition.utils.FaceDetectionUtils;
 
@@ -53,7 +54,7 @@ public class FaceRecognitionState extends CameraState {
 			FACE_RECT_COLOR = COR_VERDE;
 		else {
 			FACE_RECT_COLOR = COR_ROSA;
-			Intent intent = new Intent(super.cameraActivity.getApplicationContext(), MenuInicial.class);
+			Intent intent = new Intent(super.cameraActivity.getApplicationContext(), InsertPin.class);
 			intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 			super.cameraActivity.getApplicationContext().startActivity(intent);
 		}
